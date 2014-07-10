@@ -1,0 +1,20 @@
+graph expression_tree {
+    ratio = "fill";
+    size = "4,4";
+    node [size="30,60", shape = circle];
+    root [ label = "|" ];
+    root -- star;
+    star [ label = "*" ];
+    root -- d;
+    d [ label = "d" ];
+    star -- or;
+    or [ label = "|" ];
+    or -- cat;
+    cat [ label = "." ];
+    or -- c;
+    c [ label = "c" ];
+    cat -- a;
+    a [ label = "a" ];
+    cat -- b;
+    b [ label = "b" ];
+}

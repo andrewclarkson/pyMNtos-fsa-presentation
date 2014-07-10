@@ -4,9 +4,9 @@
 	<head>
 		<meta charset="utf-8">
 
-		<title>REST as an architectural style</title>
+		<title>Reimplementing Regular Expressions as Finite State Automata</title>
 
-		<meta name="description" content="A presentation for PyMNtos on the pros and cons of RESTful architectures">
+		<meta name="description" content="A presentation for PyMNtos on how and why you might reimplement regular expresions">
 		<meta name="author" content="Andrew Clarkson">
 
 		<meta name="apple-mobile-web-app-capable" content="yes" />
@@ -43,8 +43,8 @@
 			<!-- Any section element inside of this container is displayed as a slide -->
 			<div class="slides">
 				<section>
-                    <h1>REST as an <br/>Architectural Style</h1>
-					<h3>Strengths and Limitations</h3>
+                    <h1>Reimplementing <br/>Regular Expressions</h1>
+					<h3>How and Why</h3>
 					<p>
 						<small>Created by Andrew Clarkson <a href="http://twitter.com/_andrewclarkson">@_andrewclarkson</a></small>
 					</p>
@@ -52,118 +52,147 @@
 
 				<section>
                     <section>
-                        <h2>What is REST?</h2>
+                        <h2>Why in the F***?</h2>
                     </section>
                     <section>
-                        <p>REST = REpresentational State Transfer</p>
-                        <p><a href="https://www.ics.uci.edu/~fielding/pubs/dissertation/top.htm">Described by Roy Fielding in 2000</a></p>
-                        <p>It's a architectural philosophy or <em>style</em><p>
+                        <h3>As a learning opportunity</h3>
+                    </section>
+                    <section>
+                        <h3>Because everybody's doing it wrong</h3>
                     </section>
                     
 				</section>
 				
                 <section>
                     <section>
-                        <h2>REST as a Set of Constraints</h2>
+                        <h2>Backtracking</h2>
                     </section>
                     <section>
-                        <h3>Client-Server</h3>
-                        <ul>
-                            <li>Client initiated</li>
-                            <li>Separation of concerns</li>
-                        </ul>
+                        <h3>Example:</h3>
+                        <pre><code>
+                        import re
+                        csv = "first,last,phone"
+                        re.match("^(.*,){2}p", csv)
+                        </code></pre>
                     </section>
                     <section>
-                        <h3>Stateless</h3>
-                        <ul>
-                            <li>Server doesn't hold state</li>
-                            <li>Scalable</li>
-                        </ul>
+                        <h3>Backtracking:</h3>
+                        <pre><code>
+                        csv = "first,last,something else"
+                        </code></pre>
                     </section>
                     <section>
-                        <h3>Cacheable</h3>
-                        <ul>
-                            <li>Implicitly or Explicitly</li>
-                            <li>Transparent</li>
-                        </ul>
-                    </section>
-                    <section>
-                        <h3>Uniform Interface</h3>
-                        <ul>
-                            <li>Generic</li>
-                        </ul>
-                    </section>
-                    <section>
-                        <h3>Layered</h3>
-                        <ul>
-                            <li>You don't know exactly who your talking to</li>
-                            <li>Scalable</li>
-                        </ul>
-                    </section>
-                    <section>
-                        <h3>Code-on-demand?</h3>
-                        <ul>
-                            <li>Optional</li>
-                            <li>Meant to make clients simpler?</li>
-                        </ul>
+                        <h3>Asymptotic Complexity</h3>
+                        <p>Exponential time is fine for small n</p>
                     </section>
                 </section>
                 <section>
                     <section>
-                        <h2>A Good Example</h2>
-                        <p><a href="https://github.com/basecamp/campfire-api">The Campfire API (37signals)</a></p>
+                        <h2>Let's Be Pathological!</h2>
+                        <pre><code>
+                        import re
+                        n = 5
+                        text = "a" * n
+                        regex = "^(a?){n}a{n}".replace("n", str(n))
+                        re.match(regex, text)
+                        </code></pre>
+                        <p>P.S. I've never actually finished n = 30</p>
                     </section>
                     <section>
-                        <h3>Authorization</h3>
-                        <p>via a Token</p>
-                        <pre><code>
-                            $ curl -u &lt;token&gt; https://sample.campfire.com/<uri>
-                        </code></pre>
+                        <h3>Exponential Time</h3>
+                        <img src="./img/pathological-backtracking.png">
                     </section>
                     <section>
-                        <h3>A Collection</h3>
-                        <p>Rooms</p>
-                        <pre><code>
-                            GET /rooms.xml
-                        </code></pre>
+                        <h3>Written Using Default Regex</h3>
+                        <pre><code>./pathological-backtracking.py</code></pre>
                     </section>
                     <section>
-                        <h3>A Resource</h3>
-                        <p>A specific room</p>
-                        <pre><code>
-                            GET /room/&lt;id&gt;.xml
-                        </code></pre>
-                    </section>
-                    <section>
-                        <h3>Changing State</h3>
-                        <p>Joining a room</p>
-                        <pre><code>
-                            POST /room/&lt;id&gt;/join.xml
-                        </code></pre>
-                        <p>Un-starring a message</p>
-                        <pre><code>
-                        DELETE /messages/&lt;id&gt;/star.xml
-                        </code></pre>
+                        <h3>Denial of Service?</h3>
                     </section>
                 </section>
                 <section>
-                    <h2>Things REST is good at</h2>
-                    <ul>
-                        <li>Concurrency</li>
-                        <li>Efficiency</li>
-                        <li>Transactions</li>
-                    </ul>
+                    <section>
+                        <h2>Enter Finite State Automata</h2>
+                        <p>(aw-tom-uh-tuh)</p>
+                    </section>
+                    <section>
+                        <h3>Written Using Pure Python</h3>
+                        <pre><code>./pathological-nfa.py</code></pre>
+                    </section>
+                    <section>
+                        <h3>Let's Compare</h3>
+                        <img src="./img/pathological-comparison.png">
+                    </section>
                 </section>
                 <section>
-                    <h2>Things REST is bad at</h2>
-                    <ul>
-                        <li>Realtime</li>
-                        <li>Notifications</li>
-                        <li>Distributed Computing</li>
-                    </ul>
+                    <section>
+                        <h2>What is a Finite State Automaton?</h2>
+                    </section>
+                    <section>
+                        <h3>Turnstile Example:</h3>
+                        <img src="./img/turnstile.png">
+                    </section>
                 </section>
                 <section>
-                    <h2>Questions/Thoughts?</h2>
+                    <section>
+                        <h2>Thompson Construction Algorithm</h2>
+                        <p>Generates a Non-Deterministic Finite State Automaton</p>
+                    </section>
+                    <section>
+                        <h3>1. Convert to Postfix</h3>
+                        <pre><code>(ab|c)*|d</code></pre>
+                        <p>becomes</p>
+                        <pre><code>ab.c|*d|</code></pre>
+                    </section>
+                    <section>
+                        <h3>2. Break Into Subexpressions</h3>
+                        <img src="./img/tree.png">
+                    </section>
+                    <section>
+                        <h3>3. Compose Automata</h3>
+                    </section>
+                </section>
+                <section>
+                    <section>
+                        <h3>Atomic:</h3>
+                        <img src="./img/atomic.png">
+                        <p>a</p>  
+                    </section>
+                    <section>
+                        <h3>Concatenation:</h3>
+                        <img src="./img/concatenation.png">
+                        <p>ab.</p>  
+                    </section>
+                    <section>
+                        <h3>Union:</h3>
+                        <img src="./img/union.png">
+                        <p>ab|</p>  
+                    </section>
+                    <section>
+                        <h3>Kleene Closure:</h3>
+                        <img src="./img/kleene.png">
+                        <p>a*</p>  
+                    </section>
+                    <section>
+                        <h3>Kleene Plus:</h3>
+                        <img src="./img/plus.png">
+                        <p>a+</p>  
+                    </section>
+                    <section>
+                        <h3>Optional:</h3>
+                        <img src="./img/optional.png">
+                        <p>a?</p>
+                    </section>
+                </section>
+                <section>
+                    <section>
+                        <h2>Final Thoughts</h2>
+                        <ul>
+                            <li>Backtracking is NP-complete</li>
+                            <li>But it can be useful (longest match)</li>
+                            <li>Questions?</li>
+                        </ul>
+                    </section>
                 </section>
             </div>
 		</div>

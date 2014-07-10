@@ -1,0 +1,8 @@
+digraph finite_state_machine {
+    rankdir=LR;
+    ratio=expand;
+    size="10,8";
+    node [size="10,10", shape = circle] Locked Unlocked;
+    Locked -> Unlocked [ label = "Coin" ];
+    Unlocked -> Locked [ label = "Push" ];
+}

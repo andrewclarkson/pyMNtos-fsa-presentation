@@ -1,0 +1,10 @@
+digraph plus {
+    rankdir=LR;
+    ratio = "auto";
+    size = "7,5";
+    node [size="30,60", shape = circle];
+    0;
+    node [size="30,60", shape = doublecircle];
+    0 -> 1 [label="a"];
+    1 -> 0 [label="epsilon"];
+}

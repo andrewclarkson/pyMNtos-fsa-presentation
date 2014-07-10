@@ -1,0 +1,13 @@
+digraph union {
+    rankdir=LR;
+    size = "7,5";
+    node [size="30,60", shape = doublecircle]; 5;
+    node [size="30,60", shape = circle];
+    0 -> 1 [label="epsilon"]
+    1 -> 2 [label="a"]
+    2 -> 5 [label="epsilon"]
+    0 -> 3 [label="epsilon"]
+    3 -> 4 [label="b"]
+    4 -> 5 [label="epsilon"]
+
+}

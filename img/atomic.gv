@@ -1,0 +1,10 @@
+digraph atomic {
+    rankdir=LR;
+    ratio = "fill";
+    size = "4,3";
+    node [size="30,60", shape = doublecircle]; end;
+    node [size="30,60", shape = circle];
+    start [ label = "0" ];
+    start -> end [ label = "a" ];
+    end [ label = "1" ];
+}
